@@ -43,13 +43,21 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+// Trust proxy for Render deployment
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'carnival-secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'lax'
   }
 }));
 
@@ -738,8 +746,16 @@ app.post('/login', async (req, res) => {
     res.clearCookie('rememberUserId');
   }
 
-  addMessage(req, 'success', `Welcome back, ${user.nickname}!`);
-  return res.redirect('/');
+  // Save session before redirect to ensure it persists
+  req.session.save((err) => {
+    if (err) {
+      console.error('Session save error:', err);
+      addMessage(req, 'error', 'Login failed. Please try again.');
+      return res.redirect('/login');
+    }
+    addMessage(req, 'success', `Welcome back, ${user.nickname}!`);
+    return res.redirect('/');
+  });
 });
 
 app.post('/logout', (req, res) => {
