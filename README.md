@@ -53,8 +53,8 @@ The Hong Kong Food Carnival platform is a full-featured web application designed
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/hk-food-carnival.git
-cd hk-food-carnival
+git clone https://github.com/YOUR_USERNAME/BoothSystem.git
+cd BoothSystem
 ```
 
 2. **Install dependencies**
