@@ -1,0 +1,76 @@
+<%- include('partials/page-start', { pageTitle: 'Payment' }) %>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">Payment Details</h1>
+        <p class="text-muted">Please provide payment details to confirm your reservation.</p>
+        <form action="/payment" method="post" class="row g-3" novalidate>
+          <div class="col-12">
+            <label for="nameOnCard" class="form-label">Name on Card</label>
+            <input type="text" class="form-control" id="nameOnCard" name="nameOnCard" required />
+          </div>
+          <div class="col-12">
+            <label for="cardNumber" class="form-label">Card Number</label>
+            <input type="text" class="form-control" id="cardNumber" name="cardNumber" required maxlength="19" placeholder="XXXX XXXX XXXX XXXX" />
+          </div>
+          <div class="col-md-6">
+            <label for="expiry" class="form-label">Expiry Date</label>
+            <input type="text" class="form-control" id="expiry" name="expiry" required placeholder="MM/YY" />
+          </div>
+          <div class="col-md-6">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" class="form-control" id="cvv" name="cvv" required maxlength="4" />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-success w-100">Complete Payment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h5">Reservation Overview</h2>
+        <ul class="list-group list-group-flush small">
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Event</span>
+            <strong><%= event.title %></strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Date</span>
+            <strong><%= event.date %></strong>
+          </li>
+          <li class="list-group-item">
+            <span class="d-block mb-2">Selected Booths</span>
+            <div class="d-flex flex-wrap gap-2">
+              <% order.items.forEach((item) => { %>
+              <span class="badge bg-light text-dark">
+                <strong><%= item.label %></strong>
+                <span class="ms-1">(<%= item.tier.charAt(0).toUpperCase() + item.tier.slice(1) %>)</span>
+                <span class="ms-2">HK$<%= item.price.toLocaleString() %></span>
+              </span>
+              <% }) %>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total Booths</span>
+            <strong><%= order.items.length %></strong>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total Amount</span>
+            <strong>HK$<%= (order.totalPrice || order.price).toLocaleString() %></strong>
+          </li>
+        </ul>
+        <div class="alert alert-info mt-3 mb-0 small">
+          Payment processing is simulated for this prototype. Your booking will be confirmed immediately.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/page-end') %>
+

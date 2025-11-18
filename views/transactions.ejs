@@ -1,0 +1,64 @@
+<%- include('partials/page-start', { pageTitle: 'Transactions' }) %>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <div>
+    <h1 class="h4 mb-1">Transaction History</h1>
+    <p class="text-muted mb-0">Review all booth bookings and payments completed under your account.</p>
+  </div>
+  <a href="/booths" class="btn btn-primary">Book More Booths</a>
+</div>
+
+<% if (!transactions.length) { %>
+<div class="alert alert-info">No transactions recorded yet. Reserve a booth to see your payment history here.</div>
+<% } else { %>
+<div class="table-responsive shadow-sm bg-white rounded-4">
+  <table class="table table-striped align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Ticket</th>
+        <th scope="col">Event</th>
+        <th scope="col">Booths</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Paid On</th>
+        <th scope="col">Payment Method</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% transactions.forEach((transaction) => { %>
+      <tr>
+        <td>
+          <span class="badge bg-primary"><%= transaction.booking?.ticketCode || '—' %></span>
+        </td>
+        <td>
+          <% if (transaction.event) { %>
+          <strong><%= transaction.event.title %></strong>
+          <div class="small text-muted"><%= transaction.event.date %> • <%= transaction.event.venue %></div>
+          <% } else { %>
+          <span class="text-muted">Event archived</span>
+          <% } %>
+        </td>
+        <td>
+          <% const boothLabels = (transaction.booking?.items || []).map((item) => item.label) || transaction.booking?.booths; %>
+          <div class="d-flex flex-wrap gap-1">
+            <% (boothLabels || []).forEach((label) => { %>
+            <span class="badge bg-light text-dark"><%= label %></span>
+            <% }) %>
+          </div>
+        </td>
+        <td>HK$<%= (transaction.amount || 0).toLocaleString() %></td>
+        <td><%= new Date(transaction.createdAt).toLocaleString() %></td>
+        <td class="small text-muted"><%= transaction.details?.maskedCard || '—' %></td>
+        <td>
+          <a href="/ticket/<%= transaction.bookingId %>" class="btn btn-outline-secondary btn-sm me-2">View Ticket</a>
+          <a href="/ticket/<%= transaction.bookingId %>/qr" class="btn btn-outline-primary btn-sm">View QR</a>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<% } %>
+
+<%- include('partials/page-end') %>
+

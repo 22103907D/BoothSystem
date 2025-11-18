@@ -1,0 +1,82 @@
+<%- include('partials/page-start', { pageTitle: 'Profile' }) %>
+
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div class="profile-avatar mb-3">
+          <% if (user.profileImage) { %>
+          <img src="<%= user.profileImage %>" alt="Profile image for <%= user.nickname %>" class="rounded-circle" />
+          <% } else { %>
+          <div class="placeholder-avatar">
+            <span><%= user.nickname ? user.nickname.charAt(0).toUpperCase() : user.userId.charAt(0).toUpperCase() %></span>
+          </div>
+          <% } %>
+        </div>
+        <h1 class="h5"><%= user.nickname %></h1>
+        <p class="text-muted mb-0">@<%= user.userId %></p>
+        <p class="text-muted small">Member since <%= new Date(user.createdAt).toLocaleDateString() %></p>
+        <a href="/transactions" class="btn btn-outline-primary btn-sm">View Transactions</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h4 mb-3">Account Information</h2>
+        <form action="/profile" method="post" class="row g-3" novalidate>
+          <div class="col-md-6">
+            <label for="nickname" class="form-label">Display Name</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required value="<%= user.nickname %>" />
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required value="<%= user.email %>" />
+          </div>
+          <div class="col-md-6">
+            <label for="gender" class="form-label">Gender</label>
+            <select class="form-select" id="gender" name="gender">
+              <option value="" <%= !user.gender || user.gender === 'Prefer not to say' ? 'selected' : '' %>>Prefer not to say</option>
+              <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
+              <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
+              <option value="Non-binary" <%= user.gender === 'Non-binary' ? 'selected' : '' %>>Non-binary</option>
+              <option value="Other" <%= user.gender === 'Other' ? 'selected' : '' %>>Other</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="birthdate" class="form-label">Birthdate</label>
+            <input type="date" class="form-control" id="birthdate" name="birthdate" value="<%= user.birthdate || '' %>" />
+          </div>
+          <div class="col-12">
+            <label for="profileImage" class="form-label">Profile Image URL</label>
+            <input type="url" class="form-control" id="profileImage" name="profileImage" value="<%= user.profileImage || '' %>" />
+            <div class="form-text">Provide a direct link to an image (PNG, JPG, or GIF).</div>
+          </div>
+          <div class="col-12">
+            <hr />
+            <h3 class="h6 text-uppercase text-muted">Change Password</h3>
+          </div>
+          <div class="col-md-4">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" />
+          </div>
+          <div class="col-md-4">
+            <label for="newPassword" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" />
+            <div class="form-text">Minimum 8 characters with uppercase, lowercase, and a number.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" />
+          </div>
+          <div class="col-12 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/page-end') %>
+
