@@ -17,9 +17,14 @@ const SALT_ROUNDS = 10;
 
 const app = express();
 
-// Only initialize Socket.IO in local development (not serverless)
+// Initialize Socket.IO (disable only for Vercel serverless)
 let server, io;
-if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
+if (process.env.VERCEL) {
+  // For Vercel serverless, don't use Socket.IO
+  server = http.createServer(app);
+  io = null;
+} else {
+  // For all other environments (including Render), use Socket.IO
   const { Server } = require('socket.io');
   server = http.createServer(app);
   io = new Server(server, {
@@ -28,10 +33,6 @@ if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
       methods: ["GET", "POST"]
     }
   });
-} else {
-  // For serverless, just use the app
-  server = http.createServer(app);
-  io = null;
 }
 
 app.set('view engine', 'ejs');
@@ -207,27 +208,29 @@ function verifyToken(token) {
   }
 }
 
-// Socket.IO connection handling
-io.on('connection', (socket) => {
-  console.log('Client connected to analytics');
-  
-  // Send initial data
-  const data = loadData();
-  const analyticsData = generateAnalyticsData(data);
-  socket.emit('statsUpdate', analyticsData);
-  
-  // Update every minute
-  const interval = setInterval(() => {
+// Socket.IO connection handling (only if Socket.IO is initialized)
+if (io) {
+  io.on('connection', (socket) => {
+    console.log('Client connected to analytics');
+    
+    // Send initial data
     const data = loadData();
     const analyticsData = generateAnalyticsData(data);
     socket.emit('statsUpdate', analyticsData);
-  }, 60000);
-  
-  socket.on('disconnect', () => {
-    clearInterval(interval);
-    console.log('Client disconnected from analytics');
+    
+    // Update every minute
+    const interval = setInterval(() => {
+      const data = loadData();
+      const analyticsData = generateAnalyticsData(data);
+      socket.emit('statsUpdate', analyticsData);
+    }, 60000);
+    
+    socket.on('disconnect', () => {
+      clearInterval(interval);
+      console.log('Client disconnected from analytics');
+    });
   });
-});
+}
 
 // Server initialization will occur later in the file
 
