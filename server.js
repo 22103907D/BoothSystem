@@ -1514,8 +1514,8 @@ ensureAdminUser();
 // Export for Vercel serverless
 module.exports = app;
 
-// Only start server if not in Vercel environment
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+// Start server (skip only for Vercel serverless)
+if (!process.env.VERCEL) {
   server.listen(PORT, () => {
     console.log(`Hong Kong Food Carnival system running at http://localhost:${PORT}`);
   });
