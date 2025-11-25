@@ -1,3 +1,7 @@
+/*
+ * Cheng Tsz Hung (25017438D)
+ * Awwab Hamam (22103907D)
+ */
 (function () {
   function formatCurrency(value) {
     return Number(value || 0).toLocaleString();

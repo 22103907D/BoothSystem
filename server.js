@@ -1,3 +1,7 @@
+/*
+ * Cheng Tsz Hung (25017438D)
+ * Awwab Hamam (22103907D)
+ */
 const express = require('express');
 const path = require('path');
 const session = require('express-session');

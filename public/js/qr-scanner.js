@@ -1,3 +1,7 @@
+/*
+ * Cheng Tsz Hung (25017438D)
+ * Awwab Hamam (22103907D)
+ */
 let scanner = null;
 
 async function initializeScanner() {

@@ -1,3 +1,7 @@
+/*
+ * Cheng Tsz Hung (25017438D)
+ * Awwab Hamam (22103907D)
+ */
 const socket = io();
 
 const revenueCtx = document.getElementById('revenueChart').getContext('2d');

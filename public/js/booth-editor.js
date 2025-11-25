@@ -1,3 +1,7 @@
+/*
+ * Cheng Tsz Hung (25017438D)
+ * Awwab Hamam (22103907D)
+ */
 (function () {
   const mapWrapper = document.querySelector('.booth-map-wrapper');
   const svg = document.getElementById('editorMap');
