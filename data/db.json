@@ -11,6 +11,18 @@
       "createdAt": "2025-11-08T10:14:59.208Z",
       "updatedAt": "2025-11-08T10:14:59.208Z",
       "profileImage": null
+    },
+    {
+      "userId": "TestUser",
+      "passwordHash": "$2b$10$gAj0cyev14i2fgMwqn.xCudsQxHo1zDt.ehye4Iu/ULLg4QQNuc.K",
+      "nickname": "Test User",
+      "email": "testing@gmail.com",
+      "gender": "Prefer not to say",
+      "birthdate": "1990-02-22",
+      "profileImage": null,
+      "role": "user",
+      "createdAt": "2025-11-25T13:56:16.084Z",
+      "updatedAt": "2025-11-25T13:56:16.084Z"
     }
   ],
   "events": [

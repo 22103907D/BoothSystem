@@ -86,11 +86,11 @@ http://localhost:3000
 
 **Admin Account:**
 - Username: `admin`
-- Password: `admin123`
+- Password: `adminpass`
 
 **Test User Account:**
-- Username: `testuser`
-- Password: `password123`
+- Username: `TestUser`
+- Password: `TestUser123`
 
 ### Key Routes
 
@@ -233,16 +233,6 @@ minproj/
 - `GET /admin/booth-editor/:eventId` - Edit booth configuration
 - `POST /admin/events` - Create new event
 - `DELETE /admin/users/:userId` - Remove user
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📝 License
 
